@@ -35,3 +35,20 @@ intval, err := config.LookupInt("testint")
 group := config.Lookup("testgroup")
 teststring, err := group.LookupString("testinggroup")
 ```
+
+```go
+
+confstr := "struct: { aint=1; astring=\"test\"; afloat=13.37; abool=true; }"
+config := NewConfig()
+err := config.ReadString(confstr)
+if err != nil {
+	t.Fatal("error loading config " + err.Error())
+}
+set = config.Lookup("struct.aint")
+set.SetInt(false)
+
+set = config.Lookup("struct.astring")
+set.SetString("Hello")
+
+set = config.Lookup("struct.afloat")
+set.SetFloat(12.4)

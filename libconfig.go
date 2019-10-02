@@ -227,6 +227,59 @@ func (setting *Setting) LookupString(path string) (string, error) {
 	return C.GoString(result), nil
 }
 
+func (setting *Setting) SetInt(val int) error {
+	// todo: maybe this segfaults?
+	cval := C.int(val)
+
+	rc := C.config_setting_set_int(
+		setting.csetting,
+		cval)
+	if rc == CONFIG_FALSE {
+		return fmt.Errorf("Error setting value")
+	}
+	return nil
+}
+
+func (setting *Setting) SetFloat(val float64) error {
+	cval := C.double(val)
+
+	rc := C.config_setting_set_float(
+		setting.csetting,
+		cval)
+	if rc == CONFIG_FALSE {
+		return fmt.Errorf("Error setting value")
+	}
+	return nil
+}
+
+func (setting *Setting) SetBool(val bool) error {
+
+	var cval C.int = 1
+	if !val {
+		cval = 0
+	}
+	rc := C.config_setting_set_bool(
+		setting.csetting,
+		cval)
+	if rc == CONFIG_FALSE {
+		return fmt.Errorf("Error setting value")
+	}
+	return nil
+}
+
+func (setting *Setting) SetString(val string) error {
+	cval := C.CString(val)
+	defer C.free(unsafe.Pointer(cval))
+
+	rc := C.config_setting_set_string(
+		setting.csetting,
+		cval)
+	if rc == CONFIG_FALSE {
+		return fmt.Errorf("Error setting value")
+	}
+	return nil
+}
+
 func (config *Config) error(op string) error {
 	// This ***** library implements those as macros, so we have to hack....
 	//error_text := C.conf.error_text(unsafe.Pointer(config.cconf))
