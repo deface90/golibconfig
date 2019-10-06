@@ -280,6 +280,90 @@ func (setting *Setting) SetString(val string) error {
 	return nil
 }
 
+func (config *Config) AddStringSettingToParent(parentName string, settingName string) (setting *Setting) {
+	parentsetting := new(Setting)
+	cpath := C.CString(parentName)
+	defer C.free(unsafe.Pointer(cpath))
+	csettingname := C.CString(settingName)
+	defer C.free(unsafe.Pointer(csettingname))
+	parentsetting.csetting = C.config_lookup(&config.cconf, cpath)
+	if parentsetting.csetting == nil {
+		return nil
+	}
+
+	//parent found, try adding new setting
+	setting = new(Setting)
+	setting.csetting = C.config_setting_add(parentsetting.csetting, csettingname, 5)
+	if setting.csetting != nil {
+		return setting
+	}
+
+	return nil
+}
+
+func (config *Config) AddIntSettingToParent(parentName string, settingName string) (setting *Setting) {
+	parentsetting := new(Setting)
+	cpath := C.CString(parentName)
+	defer C.free(unsafe.Pointer(cpath))
+	csettingname := C.CString(settingName)
+	defer C.free(unsafe.Pointer(csettingname))
+	parentsetting.csetting = C.config_lookup(&config.cconf, cpath)
+	if parentsetting.csetting == nil {
+		return nil
+	}
+
+	//parent found, try adding new setting
+	setting = new(Setting)
+	setting.csetting = C.config_setting_add(parentsetting.csetting, csettingname, 2)
+	if setting.csetting != nil {
+		return setting
+	}
+
+	return nil
+}
+
+func (config *Config) AddFloatSettingToParent(parentName string, settingName string) (setting *Setting) {
+	parentsetting := new(Setting)
+	cpath := C.CString(parentName)
+	defer C.free(unsafe.Pointer(cpath))
+	csettingname := C.CString(settingName)
+	defer C.free(unsafe.Pointer(csettingname))
+	parentsetting.csetting = C.config_lookup(&config.cconf, cpath)
+	if parentsetting.csetting == nil {
+		return nil
+	}
+
+	//parent found, try adding new setting
+	setting = new(Setting)
+	setting.csetting = C.config_setting_add(parentsetting.csetting, csettingname, 4)
+	if setting.csetting != nil {
+		return setting
+	}
+
+	return nil
+}
+
+func (config *Config) AddBoolSettingToParent(parentName string, settingName string) (setting *Setting) {
+	parentsetting := new(Setting)
+	cpath := C.CString(parentName)
+	defer C.free(unsafe.Pointer(cpath))
+	csettingname := C.CString(settingName)
+	defer C.free(unsafe.Pointer(csettingname))
+	parentsetting.csetting = C.config_lookup(&config.cconf, cpath)
+	if parentsetting.csetting == nil {
+		return nil
+	}
+
+	//parent found, try adding new setting
+	setting = new(Setting)
+	setting.csetting = C.config_setting_add(parentsetting.csetting, csettingname, 6)
+	if setting.csetting != nil {
+		return setting
+	}
+
+	return nil
+}
+
 func (config *Config) error(op string) error {
 	// This ***** library implements those as macros, so we have to hack....
 	//error_text := C.conf.error_text(unsafe.Pointer(config.cconf))

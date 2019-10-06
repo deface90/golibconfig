@@ -175,3 +175,122 @@ func TestSetSetting(t *testing.T) {
 		t.Fatal("wrong bool value")
 	}
 }
+
+func TestAddStringSetting(t *testing.T) {
+
+	confstr := "struct: { aint=1; astring=\"test\"; afloat=13.37; abool=true; }"
+	config := NewConfig()
+	err := config.ReadString(confstr)
+	if err != nil {
+		t.Fatal("error loading config " + err.Error())
+	}
+
+	//Create new setting
+	newsetting := config.AddStringSettingToParent("struct", "anotherstring")
+	if newsetting == nil {
+		t.Fatal("error adding string setting")
+	}
+	//Set value
+	newsetting.SetString("hello")
+
+	//Readback
+	setting := config.Lookup("struct")
+	astr, err := setting.LookupString("anotherstring")
+	if err != nil {
+		t.Fatal("error getting setting " + err.Error())
+	}
+
+	if astr != "hello" {
+		t.Fatal("wrong string value")
+	}
+
+}
+
+func TestAddIntSetting(t *testing.T) {
+
+	confstr := "struct: { aint=1; astring=\"test\"; afloat=13.37; abool=true; }"
+	config := NewConfig()
+	err := config.ReadString(confstr)
+	if err != nil {
+		t.Fatal("error loading config " + err.Error())
+	}
+
+	//Create new setting
+	newsetting := config.AddIntSettingToParent("struct", "anotherint")
+	if newsetting == nil {
+		t.Fatal("error adding int setting")
+	}
+	//Set value
+	newsetting.SetInt(22)
+
+	//Readback
+	setting := config.Lookup("struct")
+	aint, err := setting.LookupInt("anotherint")
+	if err != nil {
+		t.Fatal("error getting int " + err.Error())
+	}
+
+	if aint != 22 {
+		t.Fatal("wrong string value")
+	}
+}
+
+func TestAddFloatSetting(t *testing.T) {
+
+	confstr := "struct: { aint=1; astring=\"test\"; afloat=13.37; abool=true; }"
+	config := NewConfig()
+	err := config.ReadString(confstr)
+	if err != nil {
+		t.Fatal("error loading config " + err.Error())
+	}
+
+	//Create new setting
+	newsetting := config.AddFloatSettingToParent("struct", "anotherfloat")
+	if newsetting == nil {
+		t.Fatal("error adding float setting")
+	}
+	//Set value
+	newsetting.SetFloat(16.89)
+
+	//Readback
+	setting := config.Lookup("struct")
+	afloat, err := setting.LookupFloat("anotherfloat")
+	if err != nil {
+		t.Fatal("error getting float " + err.Error())
+	}
+
+	if afloat != 16.89 {
+		t.Fatal("wrong float value")
+	}
+
+}
+
+func TestAddBoolSetting(t *testing.T) {
+
+	confstr := "struct: { aint=1; astring=\"test\"; afloat=13.37; abool=true; }"
+	config := NewConfig()
+	err := config.ReadString(confstr)
+	if err != nil {
+		t.Fatal("error loading config " + err.Error())
+	}
+
+	//Create new setting
+	newsetting := config.AddBoolSettingToParent("struct", "anotherbool")
+	if newsetting == nil {
+		t.Fatal("error adding bool setting")
+	}
+	//Set value
+	newsetting.SetBool(false)
+
+	//Readback
+	setting := config.Lookup("struct")
+	abool, err := setting.LookupBool("anotherbool")
+	if err != nil {
+		t.Fatal("error getting bool " + err.Error())
+	}
+
+	if abool != false {
+		t.Fatal("wrong bool value")
+	}
+
+}
