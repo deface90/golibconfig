@@ -158,6 +158,10 @@ func (config *Config) LookupString(path string) (string, error) {
 
 //  SETTING stuff
 
+func (setting *Setting) IsNil() bool {
+    return setting.csetting == nil
+}
+
 func (setting *Setting) Lookup(path string) (subsetting *Setting) {
 	subsetting = new(Setting)
 	cpath := C.CString(path)

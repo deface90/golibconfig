@@ -59,6 +59,25 @@ func TestConfig_Lookup(t *testing.T) {
 	}
 }
 
+func TestSetting_IsNil(t *testing.T) {
+	confstr := "struct: { aint=1; astring=\"test\"; afloat=13.37; abool=true; }"
+	config := NewConfig()
+	err := config.ReadString(confstr)
+	if err != nil {
+		t.Fatal("error loading config " + err.Error())
+	}
+
+	setting := config.Lookup("struct")
+	if setting.IsNil() {
+		t.Fatalf("wrong is nil value")
+	}
+
+	setting = config.Lookup("notpresent")
+	if !setting.IsNil() {
+		t.Fatalf("wrong is nil value")
+	}
+}
+
 func TestLookupSetting(t *testing.T) {
 	confstr := "struct: { aint=1; astring=\"test\"; afloat=13.37; abool=true; }"
 	config := NewConfig()
